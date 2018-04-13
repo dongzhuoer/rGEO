@@ -1,31 +1,35 @@
-# fortran is needed to install source version of some recommeded packages, such as cluster and Matrix
-# https://gist.github.com/dongzhuoer/dd332dc13ef06ee4447f69aaacbdcb1a
 language: r
-os: [linux, osx]
-r: [release, devel, oldrel]
 matrix:
-  fast_finish: true
-  allow_failures:
-  - r: devel
-  - r: oldrel
+  include:
+    - r: release
+    - language: generic
+      services: docker
+    - os: osx
+    - r: oldrel
 cache: packages
-latex: false
-pandoc: false
-fortran: true  
 git:
   depth: false
 
 before_install:
-  - R -e "if (Sys.getenv('TRAVIS_EVENT_TYPE') == 'cron') unlink(dir(.libPaths()[1], full.names = T), recursive = T)"
-  - R --slave -e "source('https://gist.github.com/dongzhuoer/dd332dc13ef06ee4447f69aaacbdcb1a/raw/b4b5bc35183338f87235ec1691396d9e5cdf7a8d/move-recommended-packages-to-user-library-for-travis.R')"
-  - R --slave -e "update.packages(ask = F)"
+  # leave the interface for the future support of docker build
+  - if [ "$TRAVIS_R_VERSION" == "" ]; then
+        docker run -d -t --name devtools0 -v "$PWD":/home/docker/travis -w /home/docker/travis -u docker r-base;
+        shopt -s expand_aliases; alias R='docker exec devtools0 R';
+        R --version; alias R='echo'; 
+    fi;    
+  # combined with a weekly cron job, package cache would be updated quarterly (first week of first month of each quarter)
+  - if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then 
+        R --slave -e "date <- Sys.Date(); day <- as.integer(substr(date, 9, 10)); month <- as.integer(substr(date, 6, 7)); clean <- month %% 3L == 1L && day <= 7L; if (clean) unlink(dir(.libPaths()[1], full.names = T), recursive = T)"; 
+    fi;
 install:
-  - R --slave -e "if (!('devtools' %in% .packages(T))) install.packages('devtools')"
-  - R --slave -e "devtools::install_github('r-lib/devtools')"
-  - R --slave -e "source('https://bioconductor.org/biocLite.R')"
+  - R --slave -e "update.packages(.libPaths()[1], ask = F)";
+  - R --slave -e "if (!('devtools' %in% .packages(T))) install.packages('devtools')";
 script:
-  - R --slave -e "devtools::install_local(getwd())"
-  - R --slave -e "devtools::update_packages(c('testthat', 'roxygen2')); devtools::load_all(); if (dir.exists('tests/testthat')) {devtools::test(); testthat::test_dir('tests/testthat/', reporter = 'fail')}"
+  - R --slave -e "devtools::install_local(getwd())";
+  - ls tests/testthat/*.R || travis_terminate 0;   # devtools::test() requires `tests/testthat` directory, but testthat::test_dir() dictate there must be a R script   
+  - R --slave -e "devtools::update_packages(c('testthat', 'roxygen2'))";
+  # devtools::test() loads all and report result, testthat::test_dir() exit no-zero when a test fails  
+  - R --slave -e "devtools::test(); testthat::test_dir('tests/testthat/', reporter = 'fail')";
 
 notifications:
   email: false
