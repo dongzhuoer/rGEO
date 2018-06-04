@@ -1,7 +1,7 @@
 testthat::context('Initialize environment')
 
 # some globle tasks ------------------------
-# library(magrittr)
+library(magrittr)
 
 # code you may want to copy -----------------------------
 

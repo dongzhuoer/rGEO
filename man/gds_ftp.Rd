@@ -2,19 +2,25 @@
 % Please edit documentation in R/ftp.R
 \name{gds_ftp}
 \alias{gds_ftp}
-\title{ftp directory for GDS accession}
+\alias{gse_ftp}
+\alias{gpl_ftp}
+\title{ftp directory path to GEO accession (GDS, GSE or GPL)}
 \usage{
 gds_ftp(accession)
+
+gse_ftp(accession)
+
+gpl_ftp(accession)
 }
 \arguments{
-\item{accession}{character.}
+\item{accession}{character. like 'GDS479', 'GSE3', 'GPL2570'}
 }
 \value{
-character. path to the ftp directory, without trailing \code{/}
+character. ftp directory path, without trailing \code{/}.
 }
 \examples{
-\\donotrun{
-    gds_ftp('GDS479') \%>\% browseURL()
-}
+gds_ftp('GDS479')
+gse_ftp('GSE3')
+gpl_ftp('GPL2570')
 
 }

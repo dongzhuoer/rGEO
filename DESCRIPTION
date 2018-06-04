@@ -10,5 +10,17 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
-Imports: 
-    magrittr
+Imports:
+    libzhuoer,
+    hgnc,
+    rGEO.data,
+    magrittr,
+    readr,
+    dplyr,
+    stringr,
+    tibble,
+    rvest
+Remotes:
+    dongzhuoer/libzhuoer,
+    dongzhuoer/hgnc,
+    dongzhuoer/rGEO.data
