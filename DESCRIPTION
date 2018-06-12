@@ -1,11 +1,13 @@
 Package: rGEO
 Type: Package
-Title: utilities for accessing GEO (Gene Expression Omnibus)
+Title: read GEO (Gene Expression Omnibus) raw data
 Version: 0.0.0.9000
 Authors@R: person("Zhuoer", "Dong", email = "dongzhuoer@mail.nankai.edu.cn", 
     role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: AGPL-3.0
+Description: refer to https://dongzhuoer.github.io/rGEO
+URL: https://github.com/dongzhuoer/rGEO
+BugReports: https://github.com/dongzhuoer/rGEO/issues
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
@@ -13,14 +15,17 @@ Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Imports:
     libzhuoer,
     hgnc,
-    rGEO.data,
     magrittr,
     readr,
     dplyr,
     stringr,
     tibble,
     rvest
+Suggests: testthat,
+    roxygen2,
+    rGEO.data
 Remotes:
     dongzhuoer/libzhuoer,
     dongzhuoer/hgnc,
     dongzhuoer/rGEO.data
+VignetteBuilder: knitr

@@ -2,11 +2,10 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "presentation": {
-        "reveal": "silent",
-        "panel": "shared"
-    },
     "type": "shell",
+    "presentation": {
+        "reveal": "silent"
+    },
     "tasks": [
         {
             "label": "data",
@@ -22,6 +21,14 @@
             "label": "document",
             "command": "R --slave -e 'devtools::document()'",
             "problemMatcher": []
+        },
+        {
+            "label": "pkgdown",
+            "command": "R -e 'pkgdown::build_site()'",
+            "problemMatcher": [],
+            "dependsOn": [
+                "document"
+            ]
         },
         {
             "label": "test",

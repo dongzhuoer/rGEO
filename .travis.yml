@@ -27,7 +27,7 @@ install:
 script:
   - R --slave -e "devtools::install_local(getwd())";
   - ls tests/testthat/*.R || travis_terminate 0;   # devtools::test() requires `tests/testthat` directory, but testthat::test_dir() dictate there must be a R script   
-  - R --slave -e "devtools::update_packages(c('testthat', 'roxygen2'))";
+  - R --slave -e "devtools::install_deps(dependencies = 'Suggests')";
   # devtools::test() loads all and report result, testthat::test_dir() exit no-zero when a test fails  
   - R --slave -e "devtools::test(); testthat::test_dir('tests/testthat/', reporter = 'fail')";
 

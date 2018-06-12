@@ -9,9 +9,8 @@ testthat::test_that('read_gse_matrix() non existent file', {
 })
 
 testthat::test_that('read_gse_matrix() GSE51280', {
-	testthat::expect_output(read_gse_matrix('inst/extdata/GSE51280_series_matrix.txt.gz', T))
+	matrix <- read_gse_matrix('inst/extdata/GSE51280_series_matrix.txt.gz')
 
-	matrix <- read_gse_matrix('inst/extdata/GSE51280_series_matrix.txt.gz', F)
 	testthat::expect_true(tibble::is_tibble(matrix))
 	testthat::expect_identical(sapply(matrix, class) %>% {names(.) <- NULL; .}, c('character', rep('numeric', 24)))
  	testthat::expect_identical(colnames(matrix)[1], 'ID_REF')
@@ -21,8 +20,8 @@ testthat::test_that('read_gse_matrix() GSE51280', {
 
 testthat::test_that('read_gse_matrix() GSE19161', {
 	# some duplicated ones are omitted
+	matrix <- read_gse_matrix('inst/extdata/GSE19161_series_matrix.txt.gz')
 
-	matrix <- read_gse_matrix('inst/extdata/GSE19161_series_matrix.txt.gz', F)
 	testthat::expect_identical(sapply(matrix, class) %>% {names(.) <- NULL; .}, c('character', rep('numeric', 61)))
  	testthat::expect_identical(dim(matrix), c(658L, 62L))
 })

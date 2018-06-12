@@ -9,15 +9,17 @@ geo_ftp <- function(accession, base_dir) {
 
 # ftp directory -----------
 
-#' @title ftp directory path to GEO accession (GDS, GSE or GPL)
+#' @title ftp path to the directory of GEO accession (GDS, GSE or GPL)
 #'
 #' @param accession character. like 'GDS479', 'GSE3', 'GPL2570'
 #'
-#' @return character. ftp directory path, without trailing `/`.
+#' @return character. ftp path to directory,  without trailing `/`.
 #' 
 #' @examples
 #' gds_ftp('GDS479')
+#' 
 #' gse_ftp('GSE3')
+#' 
 #' gpl_ftp('GPL2570')
 #' 
 #' @export
@@ -52,17 +54,19 @@ gpl_ftp <- function(accession) {
 # ftp file -----------
 
 
-#' @title ftp file path to GEO raw data file
+#' @title ftp path to GEO raw data file
 #' 
 #' @description `gpl_soft_ftp()` for GPL SOFT file, `gse_soft_ftp()` for GSE SOFT file, `gse_matrix_ftp()` for GSE matrix file
 #' 
 #' @param accession character. like 'GPL6947', 'GSE19161'
 #'
-#' @return character. ftp file path
+#' @return character. ftp path to file
 #' 
 #' @examples
 #' gpl_soft_ftp('GPL6947')
+#' 
 #' gse_soft_ftp('GSE19161')
+#' 
 #' gse_matrix_ftp('GSE19161')
 #'
 #' @export

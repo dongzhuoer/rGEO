@@ -1,0 +1,104 @@
+---
+title: "Mapping probes on a chip to HUGO gene symbol"
+author: "Zhuoer Dong"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Mapping probes on a chip to HUGO gene symbol}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(comment = '')
+```
+
+# quick start
+
+The format of SOFT (chip annotation) file is really a messy, or rather, aganist humanity.
+
+we need probe-to-gene, choose [HUGO](https://www.genenames.org/) gene symbol
+
+somethig like a [figure](standard format)
+
+what we have
+
+[Four figure](four messy figure)
+
+To give you a better idea for where the problems lies, 
+
+[figure](GDS)
+
+So the core problem is we don't know where the information lies.
+
+
+```r
+info_all %>% filter(type == 'unknown') %>% dplyr::filter(stringr::str_detect(full, stringr::fixed('entrez', T))) %>%
+    dplyr::filter(stringr::str_detect(full, stringr::fixed('id', T))) %>%
+	{.$full %>% unique %>% cat(sep = '\n'); .}
+```
+
+```
+EntrezGeneID: EntrezGene ID
+ORF: Entrez Gene identifier for the gene represented
+GeneID: Entrez Gene identification number
+UniGene_ID: UniGene Database Accession Number (http://www.ncbi.nlm.nih.gov/sites/entrez?db=unigene)
+ORF: Entrez GENE ID
+Entrez_Gene_ID: Entrez gene ID
+GENE: Entrez GeneID of sequence used to design cDNA probe
+Gene_ID: id in NCBI Entrez Gene database
+```
+
+```r
+info_all %>% filter(type == 'unknown') %>% dplyr::filter(stringr::str_detect(full, stringr::fixed('entrez', T))) %>%
+    dplyr::filter(stringr::str_detect(full, stringr::fixed('id', T))) %>%
+	dplyr::filter(!stringr::str_detect(name, stringr::fixed('unigene', T)))%>%
+	{.$full %>% unique %>% cat(sep = '\n'); .}
+```
+
+```
+GeneID: EntrezGene ID
+SPOT_ID: SNP_id; NCBI rs accession number for each SNP; Entrez SNP ID
+Entrez GeneID: Entrez Gene ID
+GENE_ID: EntrezGene GeneID
+```
+
+
+final code of `filter_entre_id`
+
+
+
+
+
+
+
+# how to develop
+
+though it may seems pretty wired. it's best way to preserve reproducibility. 
+
+Basically, you make change in `R/platform.R`,  `Load All` (C-S-L, or ), then Knit `R-raw/platform.Rmd` to check whether the rule returns exactly what you want. (you can also execute all chunk before, and then repeat modify rule - load- run a specific chunk to save time)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

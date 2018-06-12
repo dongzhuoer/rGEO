@@ -3,44 +3,45 @@
 
 #' @title read GSE series matrix file (contains expression data)
 #'
-#' @details for now, we don't collect sample meta data
+#' @details For now, we assume that the only special value in input file is '' (empty, you may search `\\t\\t`), i.e., no `Inf`, `NaN`, `NA`, etc. And we don't collect sample meta data.
 #'
-#' @param path string. path to file
+#' @param path string. path to the matrix file
 #'
-#' @return tibble. the first variable must be `ID_REF`, others are gene expression value of each sample
+#' @return tibble or NULL. the first variable is `ID_REF` (probe ID), others are gene expression value of each sample
 #'
 #' @examples
+#' read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = 'rGEO'))
 #'
-#' @seealso [write_txt]
+#' @family read raw data
+#' 
 #' @export
-read_gse_matrix <- function(matrix_file, verbose = F) {
+
+# matrix_file <- 'inst/extdata/GSE51280_series_matrix.txt.gz'
+read_gse_matrix <- function(matrix_file) {
 	if (!file.exists(matrix_file)) return(NULL)
 	matrix_raw <- readr::read_lines(matrix_file);
 
     matrix_boundary <- stringr::str_which(matrix_raw, 'series_matrix_table');
 	if (diff(matrix_boundary) == 2L) return(NULL); # only a header line, no data to read
-    matrix <- matrix_raw[seq(matrix_boundary[1] + 1, matrix_boundary[2] - 1)] %>%
+    
+	matrix_raw[seq(matrix_boundary[1] + 1, matrix_boundary[2] - 1)] %>%
     	libzhuoer::read_char_tsv() %>% {suppressWarnings(dplyr::mutate_at(., -1, as.double))}
-
-	# meta <- series %>% stringr::str_subset('^!Sample_') %>% stringr::str_replace('^!', '') %>%
-	# 	stringr::str_split('\t') %>% plyr::laply(as.character) %>% t %>%
-	# 	plyr::aaply(1, . %>% paste0(collapse = '\t')) %>% {suppressWarnings(read_char_tsv(.))}
-
-    if (verbose) {cat('\n\nmatrix:\n'); print(matrix);};
-
-    return(matrix)
 }
+#" maybe used to parse meta data of samples
+# meta <- series %>% stringr::str_subset('^!Sample_') %>% stringr::str_replace('^!', '') %>%
+# 	stringr::str_split('\t') %>% plyr::laply(as.character) %>% t %>%
+# 	plyr::aaply(1, . %>% paste0(collapse = '\t')) %>% {suppressWarnings(read_char_tsv(.))}
 
 
 
 
-# soft --------------------
+# SOFT --------------------
 
-#' @title read GSE soft file (contains platform annotation)
+#' @title parse GSE SOFT file (contains platform annotation)
 #'
-#' @details for now, we drop probes which haven't been mapped to a symbool (mapping multiple symbols is okay)
+#' @details for now, we drop probes which haven't been mapped to a symbool (mapping to multiple symbols is okay).
 #'
-#' @param path string. path to file
+#' @param path string. path to the SOFT file
 #'
 #' @return list
 #'
@@ -51,10 +52,15 @@ read_gse_matrix <- function(matrix_file, verbose = F) {
 #' 1. table: tibble. chip annotation
 #'
 #' @examples
+#' parse_gse_soft(system.file('extdata/GSE19161_family.soft.gz', package = 'rGEO'), verbose = F)
+#' 
+#' parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 #'
-#' @seealso [read_gse_soft]
-# parse_gse_soft('inst/extdata/GSE19161_family.soft.gz')
-# soft_file <- 'inst/extdata/GSE12080_family.soft.gz';verbose = T
+#' @family read raw data
+#' 
+#' @export
+#' 
+# soft_file <- 'inst/extdata/GSE12080_family.soft.gz'; verbose = T
 parse_gse_soft <- function(soft_file, verbose = T) {
 	soft <- readr::read_lines(soft_file);
     accession <- stringr::str_subset(soft, '^\\^PLATFORM') %>% stringr::str_extract('GPL\\d+');
@@ -62,7 +68,7 @@ parse_gse_soft <- function(soft_file, verbose = T) {
 
     platform_begin <- stringr::str_which(soft, '^\\^PLATFORM'); # platform section begin
     info <- soft[platform_begin:table_boundary[1]] %>% stringr::str_subset('^#') %>% {
-    	if (verbose) {cat('\nplatform meta:\n'); print(.)}
+    	if (verbose) {cat('\nplatform meta:\n'); print(.); cat('\n\n\n');}
     	tibble::tibble(
 			name = stringr::str_extract(., '(?<=^#)[^=]+(?= =)'),
 			description = stringr::str_remove(., '^#[^=]+= +')
@@ -88,32 +94,34 @@ parse_gse_soft <- function(soft_file, verbose = T) {
 	if (length(duplicated_name) > 0)
     	for (i in info$name %in% duplicated_name %>% which) colnames(table)[i] %<>% stringr::str_remove('_\\d$')
     if (!identical(colnames(table), info$name)) stop('parsing platform info failed')
-
-    platform <- list(accession = accession, info = info, table = table);
-    if (verbose) {cat('\n\n\nplatform:\n\n'); print(platform)}
-
-    return(platform)
+    
+    list(accession = accession, info = info, table = table);
 }
 
 
 
-#' @title read GSE soft file (contains platform annotation)
+#' @title read GSE SOFT file (contains platform annotation)
 #'
 #' @details for now, we drop probes which haven't been mapped to a symbool (mapping multiple symbols is okay)
 #'
-#' @param path string. path to file
+#' @param path string. path to the SOFT file
 #'
-#' @return tibble. the first variable is probe id and the second one is hugo gene symbol
+#' @return tibble or NULL. the first variable is `ID_REF` (probe ID) and the second one is [HUGO](https://www.genenames.org/) gene symbol
 #'
 #' @examples
+#' read_gse_soft(system.file('extdata/GSE19161_family.soft.gz', package = 'rGEO'))
+#' 
+#' read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'), verbose = T)
 #'
-#' @seealso [write_chip], [parse_gse_soft]
+#' @family read raw data
+#' 
 #' @export
 
-# soft_file <- 'inst/extdata/GSE19161_family.soft.gz'
+# soft_file <- 'inst/extdata/GSE19161_family.soft.gz'; verbose = T
 read_gse_soft <- function(soft_file, verbose = F) {
 	if (!file.exists(soft_file)) return(NULL);
 	platform <- parse_gse_soft(soft_file, verbose);
+    if (verbose) {cat('platform:\n\n'); print(platform)}
 
 	platform_type <- guess_platform_type(platform);
 	if (is.null(platform_type)) return(NULL);
@@ -122,16 +130,13 @@ read_gse_soft <- function(soft_file, verbose = F) {
 	measure = platform_type$measure;
 	sep_pattern = platform_type$sep_pattern;
 	as_symbol = make_as_symbol(platform_type$as_symbol_from)
-	if (verbose) cat('\n', platform$accession, ': use "', platform_type$measure, '" as ', platform_type$as_symbol_from, sep = '')
+	if (verbose) cat('\n\n', platform$accession, ': use "', platform_type$measure, '" as ', platform_type$as_symbol_from, '\n\n\n\n', sep = '')
 
-	chip <- platform$table %>%
+	platform$table %>%
         hgnc::melt_map(id, measure, sep_pattern) %>%
         dplyr::mutate('symbol' = as_symbol(!!rlang::sym(measure))) %>%
         hgnc::cast_map(id, 'symbol') %>%
 		dplyr::rename('ID_REF' = !!rlang::sym(id))
-
-	if (verbose) {cat('\n\nchip:\n'); print(chip)}
-	return(chip)
 }
 
 

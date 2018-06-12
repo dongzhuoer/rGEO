@@ -113,39 +113,6 @@ filter_sequence <- function(info) {
 	dplyr::filter(!duplicated(accession))
 }
 
-# utilify ------------------
-
-make_platform_type <- function(measure, as_symbol_from = c('entrez', 'symbol', 'ensembl', 'entrez_or_symbol', 'genbank', 'unigene')) {
-	sep_pattern = switch(match.arg(as_symbol_from),
-		'symbol' = '[^-@\\w]+',
-		'entrez' = '[^\\d]+',
-		'ensembl' = '[^ENSG\\d]+',
-		'genbank' = '[^\\w\\.]+',
-		'entrez_or_symbol' = '[^-@\\w]+',
-		'unigene' = '[^Hs\\.\\d]+'
-	)
-	list(measure = measure, sep_pattern = sep_pattern, as_symbol_from = as_symbol_from);
-
-}
-
-#' @keywords internal
-#' @export
-make_as_symbol <- function(as_symbol_from = c('entrez', 'symbol', 'ensembl', 'entrez_or_symbol', 'genbank', 'unigene')) {
-	switch(match.arg(as_symbol_from),
-		'symbol' = hgnc::as_symbol_from_symbol,
-		'entrez' = hgnc::as_symbol_from_entrez,
-		'ensembl' = hgnc::as_symbol_from_ensembl,
-		'genbank' = hgnc::as_symbol_from_genbank,
-		'entrez_or_symbol' = hgnc::as_symbol_from_entrez_or_symbol,
-		'unigene' = hgnc::as_symbol_from_unigene
-	)
-}
-
-
-#' @title make `platform` from GPL accession to test [guess_platform_type()]
-fake_platform <- function(accession, gpls) {
-	list(accession = accession, info = gpls[[accession]]$info)
-}
 
 
 # main ------------------
@@ -203,6 +170,37 @@ guess_platform_type <- function(platform) {
 	return(NULL)
 }
 
+# utilify ------------------
+
+make_as_symbol <- function(as_symbol_from = c('entrez', 'symbol', 'ensembl', 'entrez_or_symbol', 'genbank', 'unigene')) {
+	switch(match.arg(as_symbol_from),
+		'symbol' = hgnc::as_symbol_from_symbol,
+		'entrez' = hgnc::as_symbol_from_entrez,
+		'ensembl' = hgnc::as_symbol_from_ensembl,
+		'genbank' = hgnc::as_symbol_from_genbank,
+		'entrez_or_symbol' = hgnc::as_symbol_from_entrez_or_symbol,
+		'unigene' = hgnc::as_symbol_from_unigene
+	)
+}
+
+make_platform_type <- function(measure, as_symbol_from = c('entrez', 'symbol', 'ensembl', 'entrez_or_symbol', 'genbank', 'unigene')) {
+	sep_pattern = switch(match.arg(as_symbol_from),
+		'symbol' = '[^-@\\w]+',
+		'entrez' = '[^\\d]+',
+		'ensembl' = '[^ENSG\\d]+',
+		'genbank' = '[^\\w\\.]+',
+		'entrez_or_symbol' = '[^-@\\w]+',
+		'unigene' = '[^Hs\\.\\d]+'
+	)
+	list(measure = measure, sep_pattern = sep_pattern, as_symbol_from = as_symbol_from);
+}
+
+
+#' @title make `platform` from GPL accession to test [guess_platform_type()]
+#' @keywords internal
+fake_platform <- function(accession, gpls) {
+	list(accession = accession, info = gpls[[accession]]$info)
+}
 
 
 

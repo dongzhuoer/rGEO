@@ -2,12 +2,12 @@
 % Please edit documentation in R/read-gse.R
 \name{parse_gse_soft}
 \alias{parse_gse_soft}
-\title{read GSE soft file (contains platform annotation)}
+\title{parse GSE SOFT file (contains platform annotation)}
 \usage{
 parse_gse_soft(soft_file, verbose = T)
 }
 \arguments{
-\item{path}{string. path to file}
+\item{path}{string. path to the SOFT file}
 }
 \value{
 list
@@ -18,11 +18,15 @@ list
 }
 }
 \details{
-for now, we drop probes which haven't been mapped to a symbool (mapping multiple symbols is okay)
+for now, we drop probes which haven't been mapped to a symbool (mapping to multiple symbols is okay).
 }
 \examples{
+parse_gse_soft(system.file('extdata/GSE19161_family.soft.gz', package = 'rGEO'), verbose = F)
+
+parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 
 }
 \seealso{
-\link{read_gse_soft}
+Other read raw data: \code{\link{read_gse_matrix}},
+  \code{\link{read_gse_soft}}
 }

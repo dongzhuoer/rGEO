@@ -4,7 +4,7 @@
 \alias{gpl_soft_ftp}
 \alias{gse_soft_ftp}
 \alias{gse_matrix_ftp}
-\title{ftp file path to GEO raw data file}
+\title{ftp path to GEO raw data file}
 \usage{
 gpl_soft_ftp(accession)
 
@@ -16,14 +16,16 @@ gse_matrix_ftp(accession)
 \item{accession}{character. like 'GPL6947', 'GSE19161'}
 }
 \value{
-character. ftp file path
+character. ftp path to file
 }
 \description{
 \code{gpl_soft_ftp()} for GPL SOFT file, \code{gse_soft_ftp()} for GSE SOFT file, \code{gse_matrix_ftp()} for GSE matrix file
 }
 \examples{
 gpl_soft_ftp('GPL6947')
+
 gse_soft_ftp('GSE19161')
+
 gse_matrix_ftp('GSE19161')
 
 }

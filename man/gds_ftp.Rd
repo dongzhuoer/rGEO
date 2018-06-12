@@ -4,7 +4,7 @@
 \alias{gds_ftp}
 \alias{gse_ftp}
 \alias{gpl_ftp}
-\title{ftp directory path to GEO accession (GDS, GSE or GPL)}
+\title{ftp path to the directory of GEO accession (GDS, GSE or GPL)}
 \usage{
 gds_ftp(accession)
 
@@ -16,11 +16,13 @@ gpl_ftp(accession)
 \item{accession}{character. like 'GDS479', 'GSE3', 'GPL2570'}
 }
 \value{
-character. ftp directory path, without trailing \code{/}.
+character. ftp path to directory,  without trailing \code{/}.
 }
 \examples{
 gds_ftp('GDS479')
+
 gse_ftp('GSE3')
+
 gpl_ftp('GPL2570')
 
 }

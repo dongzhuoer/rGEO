@@ -1,0 +1,74 @@
+---
+title: "Introduction to rGEO"
+author: "Zhuoer Dong"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to rGEO}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(comment = '')
+```
+
+```{r}
+library(rGEO)
+```
+
+# quick start
+
+GSE raw data consists of expression matrix file and SOFT (chip annotation) file.
+
+You can find them at https://www.ncbi.nlm.nih.gov/geo/browse/, or use the 
+    following handy tools:
+    
+```{r, collapse=TRUE, comment = '#>'}
+gse_soft_ftp('GSE51280')
+
+gse_matrix_ftp('GSE51280')
+```
+    
+Then you can read them:
+
+```{r, comment=''}
+# expression matrix file
+read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = 'rGEO'))
+
+# SOFT (chip annotation) file
+read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
+```
+
+# A little deeper
+
+Let's go a little deeper to see how it works (some internal implementation is discussed in https://dongzhuoer.github.io/hgnc/docs/articles/content.html). 
+
+## expression matrix file
+
+reading expression matrix file is quiet straightforward, you just need to locate where the information lies, and `readr::read_tsv()` would take care of the rest for you.
+
+```{r eval=FALSE}
+read_gse_matrix
+```
+
+```{r results='asis', echo=FALSE}
+cat('```r\n')
+read_gse_matrix
+cat('```\n')
+```
+
+
+## SOFT (chip annotation) file
+
+SOFT (chip annotation) file is a lot more harder to deal with, in short, you have to dig useful information first ^[`parse_gse_soft()` does this] and convert that to a uniform format ^[almost the whole package does this, refer to [here]() for more details].
+
+```{r}
+# extract useful information for further processing
+parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'), F)
+```
+
+By the way, for both `parse_gse_soft()` and `read_gse_soft()` you can add `verbose = T` to make the process more clear.
+
+
+

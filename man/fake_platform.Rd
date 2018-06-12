@@ -6,3 +6,4 @@
 \usage{
 fake_platform(accession, gpls)
 }
+\keyword{internal}

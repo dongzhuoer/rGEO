@@ -1,66 +1,10 @@
 testthat::context('Testing platform.R')
 if (basename(getwd()) == 'testthat') setwd('../..')
 
-gpls <- readr::read_rds('data-raw/gpls.rds')
 
-# platform type ---------------------------------
-testthat::test_that('make_as_symbol()', {
-	testthat::expect_identical(make_as_symbol('symbol'), hgnc::as_symbol_from_symbol);
-	testthat::expect_identical(make_as_symbol('entrez'), hgnc::as_symbol_from_entrez);
-	testthat::expect_identical(make_as_symbol('ensembl'), hgnc::as_symbol_from_ensembl);
-	testthat::expect_identical(make_as_symbol('genbank'), hgnc::as_symbol_from_genbank);
-	testthat::expect_identical(make_as_symbol('entrez_or_symbol'), hgnc::as_symbol_from_entrez_or_symbol);
-	testthat::expect_identical(make_as_symbol('unigene'), hgnc::as_symbol_from_unigene);
-});
+# helper function ------------------
 
-
-testthat::test_that('make_platform_type()', {
-	testthat::expect_identical(
-		make_platform_type('Gene Symbol', 'symbol'),
-		list(measure = 'Gene Symbol',  sep_pattern = '[^-@\\w]+', as_symbol_from = 'symbol')
-	);
-	testthat::expect_identical(
-		make_platform_type('ENTREZ_GENE_ID', 'entrez'),
-		list(measure = 'ENTREZ_GENE_ID',  sep_pattern = '[^\\d]+', as_symbol_from = 'entrez')
-	);
-	testthat::expect_identical(
-		make_platform_type('Ensembl Gene ID', 'ensembl'),
-		list(measure = 'Ensembl Gene ID',  sep_pattern = '[^ENSG\\d]+', as_symbol_from = 'ensembl')
-	);
-	testthat::expect_identical(
-		make_platform_type('GB_ACC', 'genbank'),
-		list(measure = 'GB_ACC',  sep_pattern = '[^\\w\\.]+', as_symbol_from = 'genbank')
-	);
-	testthat::expect_identical(
-		make_platform_type('Entrez Gene', 'entrez_or_symbol'),
-		list(measure = 'Entrez Gene',  sep_pattern = '[^-@\\w]+', as_symbol_from = 'entrez_or_symbol')
-	);
-	testthat::expect_identical(
-		make_platform_type('Unigene ID', 'unigene'),
-		list(measure = 'Unigene ID',  sep_pattern = '[^Hs\\.\\d]+', as_symbol_from = 'unigene')
-	);
-});
-
-
-testthat::test_that('make_platform_type() sep_pattern', {
-	#" demonstrate the effectiveness of pattern `[^-@\w]+`, omitting `[A-Z]` & `\d` since too obvious
-	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^-\\w]+') %>% print, '@');
-	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@\\w]+') %>% print, '-');
-	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@\\dA-Z]+') %>% print, '[a-z]');
-	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@a-zA-Z\\d]+') %>% print, '_');
-
-
-	testthat::expect_identical(stringr::str_subset(hgnc::hugo_symbol, '[^-@\\w]+'), character(0));
-	testthat::expect_identical(stringr::str_subset(hgnc::entrez2symbol[[1]], '[^\\d]+'), character(0));
-	testthat::expect_identical(stringr::str_subset(hgnc::ensembl2symbol[[1]], '[^ENSG\\d]+'), character(0));
-	#" input may contain trailing `.\d`, check Caution in hgnc's readme for details
-	testthat::expect_identical(stringr::str_subset(hgnc::genbank2symbol[[1]], '[^\\w\\.]+'), character(0));
-	testthat::expect_identical(stringr::str_subset(hgnc::entrez_or_symbol2symbol[[1]], '[^-@\\w]+'), character(0));
-	testthat::expect_identical(stringr::str_subset(hgnc::unigene2entrez[[1]], '[^Hs\\.\\d]+'), character(0));
-});
-
-
-fake_platform_type <- . %>% fake_platform(gpls) %>% guess_platform_type
+fake_platform_type <- . %>% fake_platform(rGEO.data::gpl_metas) %>% guess_platform_type
 
 #" except for sequence, I directly test guess_platform_type() since it both tests filter_*() and the correct order in guess_platform_type()
 
@@ -81,7 +25,8 @@ testthat::test_that('guess_platform_type() NULL', {
 # `filter_non_human`
 # GPL1883
 
-# entrez_id ---------------
+## entrez_id ------------------
+
 testthat::test_that('guess_platform_type() entrez_id', {
 	testthat::expect_identical(fake_platform_type('GPL1008')$as_symbol_from, 'entrez')
 	#1
@@ -178,11 +123,9 @@ testthat::test_that('guess_platform_type() unigene', {
 
 # sequence ---------------
 testthat::test_that('guess_platform_type() sequence', {
-	info10118 <- 'GPL10118' %>% {tibble::add_column(gpls[[.]]$info, accession = .)}
+	info10118 <- 'GPL10118' %>% {tibble::add_column(rGEO.data::gpl_metas[[.]]$info, accession = .)}
 	testthat::expect_identical(info10118 %>% filter_sequence %>% nrow, 1L)
 });
-
-
 
 
 # testthat::test_that('guess_platform_type()', {
@@ -193,4 +136,65 @@ testthat::test_that('guess_platform_type() sequence', {
 # 	testthat::expect_identical(guess_platform_type('GPL4819'), make_platform_type('Gene Symbol', 'symbol'));
 # 	testthat::expect_identical(guess_platform_type('-1'), NULL);
 # });
+
+
+
+# make_as_symbol ---------------
+
+testthat::test_that('make_as_symbol()', {
+	testthat::expect_identical(make_as_symbol('symbol'), hgnc::as_symbol_from_symbol);
+	testthat::expect_identical(make_as_symbol('entrez'), hgnc::as_symbol_from_entrez);
+	testthat::expect_identical(make_as_symbol('ensembl'), hgnc::as_symbol_from_ensembl);
+	testthat::expect_identical(make_as_symbol('genbank'), hgnc::as_symbol_from_genbank);
+	testthat::expect_identical(make_as_symbol('entrez_or_symbol'), hgnc::as_symbol_from_entrez_or_symbol);
+	testthat::expect_identical(make_as_symbol('unigene'), hgnc::as_symbol_from_unigene);
+});
+
+# make_platform_type ---------------
+
+testthat::test_that('make_platform_type()', {
+	testthat::expect_identical(
+		make_platform_type('Gene Symbol', 'symbol'),
+		list(measure = 'Gene Symbol',  sep_pattern = '[^-@\\w]+', as_symbol_from = 'symbol')
+	);
+	testthat::expect_identical(
+		make_platform_type('ENTREZ_GENE_ID', 'entrez'),
+		list(measure = 'ENTREZ_GENE_ID',  sep_pattern = '[^\\d]+', as_symbol_from = 'entrez')
+	);
+	testthat::expect_identical(
+		make_platform_type('Ensembl Gene ID', 'ensembl'),
+		list(measure = 'Ensembl Gene ID',  sep_pattern = '[^ENSG\\d]+', as_symbol_from = 'ensembl')
+	);
+	testthat::expect_identical(
+		make_platform_type('GB_ACC', 'genbank'),
+		list(measure = 'GB_ACC',  sep_pattern = '[^\\w\\.]+', as_symbol_from = 'genbank')
+	);
+	testthat::expect_identical(
+		make_platform_type('Entrez Gene', 'entrez_or_symbol'),
+		list(measure = 'Entrez Gene',  sep_pattern = '[^-@\\w]+', as_symbol_from = 'entrez_or_symbol')
+	);
+	testthat::expect_identical(
+		make_platform_type('Unigene ID', 'unigene'),
+		list(measure = 'Unigene ID',  sep_pattern = '[^Hs\\.\\d]+', as_symbol_from = 'unigene')
+	);
+});
+
+
+testthat::test_that('make_platform_type() sep_pattern', {
+	#" demonstrate the effectiveness of pattern `[^-@\w]+`, omitting `[A-Z]` & `\d` since too obvious
+	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^-\\w]+') %>% print, '@');
+	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@\\w]+') %>% print, '-');
+	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@\\dA-Z]+') %>% print, '[a-z]');
+	testthat::expect_output(hgnc::hugo_symbol %>% stringr::str_subset('[^@a-zA-Z\\d]+') %>% print, '_');
+
+
+	testthat::expect_identical(stringr::str_subset(hgnc::hugo_symbol, '[^-@\\w]+'), character(0));
+	testthat::expect_identical(stringr::str_subset(hgnc::entrez2symbol[[1]], '[^\\d]+'), character(0));
+	testthat::expect_identical(stringr::str_subset(hgnc::ensembl2symbol[[1]], '[^ENSG\\d]+'), character(0));
+	#" input may contain trailing `.\d`, check Caution in hgnc's readme for details
+	testthat::expect_identical(stringr::str_subset(hgnc::genbank2symbol[[1]], '[^\\w\\.]+'), character(0));
+	testthat::expect_identical(stringr::str_subset(hgnc::entrez_or_symbol2symbol[[1]], '[^-@\\w]+'), character(0));
+	testthat::expect_identical(stringr::str_subset(hgnc::unigene2entrez[[1]], '[^Hs\\.\\d]+'), character(0));
+});
+
 

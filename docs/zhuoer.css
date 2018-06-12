@@ -1,0 +1,9 @@
+/* remove the margin of the search box  */
+#navbar > .navbar-form.navbar-right {
+    margin: 0;
+}
+
+.navbar-nav {
+    margin: 0 1em;
+}
+
