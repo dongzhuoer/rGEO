@@ -23,32 +23,32 @@ devtools::load_all()
 # prepare GPL metadata
 
 ```{r}
-gpls <- readr::read_rds('/media/computer/research/lem4/data-raw/gpls.rds')
-n_all <- length(gpls)
+gpl_metas <- rGEO.data::gpl_metas
+n_all <- length(gpl_metas)
 
 sum_length <- . %>% sapply(length) %>% sum
-# print selected gpls
+# print selected gpl_metas
 detail <- function(x, info_only = F) {
 	if (info_only)
-		print(gpls[unique(x$accession)] %>% lapply(. %>% {.$info}))
+		print(gpl_metas[unique(x$accession)] %>% lapply(. %>% {.$info}))
 	else
-		print(gpls[unique(x$accession)])
+		print(gpl_metas[unique(x$accession)])
 }
 ```
 
 # remove null
 
 ```{r}
-gpl_null <- gpls %>% {.[sapply(., . %>% {.$info} %>% is.null)]} %>% names %T>% {print(head(.))}
+gpl_null <- gpl_metas %>% {.[sapply(., . %>% {.$info} %>% is.null)]} %>% names %T>% {print(head(.))}
 
-gpls %<>% {.[setdiff(names(.), gpl_null)]}
+gpl_metas %<>% {.[setdiff(names(.), gpl_null)]}
 ```
 
 # deal with duplicated columnname
 
 ```{r cache=T}
 # for all cases in which there is duplicated name, remove those name and description are both same, then manually check left case
-gpls %>% lapply(. %>% {.$info}) %>% 
+gpl_metas %>% lapply(. %>% {.$info}) %>% 
 	lapply(. %>% {
 		if (.$name %>% duplicated %>% any) {
 			. <- .[paste(.$name, .$description) %>% {!duplicated(.)}, ];
@@ -61,7 +61,7 @@ gpls %>% lapply(. %>% {.$info}) %>%
 message('search "AlleleA_ProbeSeq in description" or "Illumina Strand 2" in description if you want to use sequence information')
 
 #" for these special accession, the second one is better (refseq or entrez)
-gpls[dup_use_latter] %<>% 
+gpl_metas[dup_use_latter] %<>% 
 	{print(lapply(., . %>% {.$info} %>% filter(name %in% name[duplicated(name)]))); .} %>%
 	lapply(function(gpl) {
 		duplicated_name <- gpl$info$name %>% {.[duplicated(.)]};
@@ -73,7 +73,7 @@ gpls[dup_use_latter] %<>%
 	})
 
 #" for others, simply pick first is enough
-gpls %<>% lapply(function(gpl) {
+gpl_metas %<>% lapply(function(gpl) {
 	dup <- duplicated(gpl[[1]]$name)
 	if (dup %>% any) {
 		gpl$info   = gpl$info[!dup, ];
@@ -84,7 +84,7 @@ gpls %<>% lapply(function(gpl) {
 }) 
 
 assertthat::assert_that(
-	gpls %>% lapply(. %>% {colnames(.$sample) %>% {.[duplicated(.)]}}) %>%
+	gpl_metas %>% lapply(. %>% {colnames(.$sample) %>% {.[duplicated(.)]}}) %>%
 		unlist %>% unique %>% libzhuoer::print_or_T(),
 	msg = 'duplicated column names not dealt'
 )
@@ -93,8 +93,8 @@ assertthat::assert_that(
 # make info df to be compatible with dplyr API
 
 ```{r make-info}
-info_all <- setdiff(names(gpls), special$accession) %>%
-	mclapply(. %>% {add_column(gpls[[.]]$info, accession = ., .before = 1)}) %>%
+info_all <- setdiff(names(gpl_metas), special$accession) %>%
+	mclapply(. %>% {add_column(gpl_metas[[.]]$info, accession = ., .before = 1)}) %>%
 	bind_rows() %>% mutate(full = paste0(name, ': ', description)) %>%
 	add_column(type = 'unknown') %T>% print
 ```
@@ -117,8 +117,6 @@ gpl_circRNA <- info_all %>% filter(type == 'unknown') %>% filter_circRNA() %>%
 	filter(!duplicated(accession)) %>% {.$accession} %T>% {print(head(.))} %T>% {print(head(.))}
 info_all %<>% mutate(type = ifelse(accession %in% gpl_circRNA, 'circRNA', type))
 ```
-
-> to do: compare which rule is better
 
 # entrez id
 ```{r}
@@ -210,7 +208,7 @@ info_all %<>% mutate(type = ifelse(accession %in% gpl_sequence, 'sequence', type
 	# filter(!str_detect(full, fixed('description', T))) %>%  
 	# {filter(., str_detect(description, fixed('alias', T))) %>% detail; .} 
 
-	# lapply(. %>% {tibble(accession = ., symbol = select(gpls[[.]]$sample, contains('symbol'))[[1]])}) %>% bind_rows() %>% filter(symbol != '') %>% filter(!(symbol %in% hgnc::hugo_symbol_all)) %>% group_by(accession) %>% summarise(n = n()) %>% arrange(desc(n))
+	# lapply(. %>% {tibble(accession = ., symbol = select(gpl_metas[[.]]$sample, contains('symbol'))[[1]])}) %>% bind_rows() %>% filter(symbol != '') %>% filter(!(symbol %in% hgnc::hugo_symbol_all)) %>% group_by(accession) %>% summarise(n = n()) %>% arrange(desc(n))
 ```
 
 # unknown

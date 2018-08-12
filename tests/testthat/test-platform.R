@@ -10,20 +10,10 @@ fake_platform_type <- . %>% fake_platform(rGEO.data::gpl_metas) %>% guess_platfo
 
 testthat::test_that('guess_platform_type() NULL', {
 	testthat::expect_identical(guess_platform_type(list(accession = 'doubi', info = NULL)), NULL)
+    testthat::expect_identical(fake_platform_type('-1'), NULL)
 })
 
 
-# to do:
-
-# `filter_miRNA`
-# gpls[['GPL10522']]
-# GPL3241
-#
-# `filter_circRNA`
-# gpls[['GPL21825']]
-#
-# `filter_non_human`
-# GPL1883
 
 ## entrez_id ------------------
 
@@ -62,6 +52,8 @@ testthat::test_that('guess_platform_type() entrez', {
     testthat::expect_false(identical(fake_platform_type('GPL5677')$as_symbol_from, 'entrez_or_symbol'))
 	#6
     testthat::expect_false(identical(fake_platform_type('GPL5694')$as_symbol_from, 'entrez_or_symbol'))
+    #7
+    testthat::expect_false(identical(fake_platform_type('GPL1228')$as_symbol_from, 'entrez_or_symbol'))
 });
 
 
@@ -126,16 +118,6 @@ testthat::test_that('guess_platform_type() sequence', {
 	info10118 <- 'GPL10118' %>% {tibble::add_column(rGEO.data::gpl_metas[[.]]$info, accession = .)}
 	testthat::expect_identical(info10118 %>% filter_sequence %>% nrow, 1L)
 });
-
-
-# testthat::test_that('guess_platform_type()', {
-# 	# to do: add test for genbank
-# 	# find more circumstances: `c('GPL22920', 'GPL570', 'GPL4819') %>% {tibble(accession = ., database = sapply(., . %>% guess_platform_type %>% {.$as_symbol} %>% formalArgs))} %>% filter(!duplicated(database))`
-# 	testthat::expect_identical(guess_platform_type('GPL22920'), make_platform_type('ENTREZ_GENE_ID', 'entrez_or_symbol'));
-# #	testthat::expect_identical(guess_platform_type('GPL570'), make_platform_type('GB_ACC', 'genbank'));#
-# 	testthat::expect_identical(guess_platform_type('GPL4819'), make_platform_type('Gene Symbol', 'symbol'));
-# 	testthat::expect_identical(guess_platform_type('-1'), NULL);
-# });
 
 
 

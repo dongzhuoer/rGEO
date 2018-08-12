@@ -1,8 +1,4 @@
-# to do: remove duplicated column with same name is table
-
-# to do: check what happens for gpl_null
-
-#
+#  duplicated column with same name is table
 dup_use_latter <- c('GPL13224', 'GPL13915', 'GPL7025', 'GPL7088', 'GPL8335')
 
 
@@ -16,26 +12,26 @@ special <- tibble::tribble(
 )
 
 # not dealt with ---------------------
-filter_non_human <- function(info) {
-	info %>%
+filter_non_human <- function(info_all) {
+	info_all %>%
     dplyr::filter(accession %in% c('GPL1883'))  	# Yeast clone vector
 }
 
-filter_miRNA <- function(info) {
-	info %>%
+filter_miRNA <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(full, stringr::regex('miRNA|microRNA', T)) |
     			  accession %in% c('GPL6127', 'GPL9349', 'GPL6513', 'GPL3241', 'GPL17546', 'GPL6743')
     )
 }
 
-filter_circRNA <- function(info) {
-	info %>%
+filter_circRNA <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(full, stringr::fixed('circRNA', T)))
 }
 
 # current rules -----------------
-filter_entrez_id <- function(info) {
-	info %>%
+filter_entrez_id <- function(info_all) {
+	info_all %>%
     dplyr::filter(name != 'GB_ACC') %>%
     dplyr::filter(!(accession %in% c('GPL8152', 'GPL8153', 'GPL9144'))) %>%  # should use symbol
     dplyr::filter(stringr::str_detect(full, stringr::fixed('entrez', T))) %>%
@@ -49,8 +45,8 @@ filter_entrez_id <- function(info) {
     dplyr::filter(!stringr::str_detect(full, 'GEO'))  # Column added by GEO staff to ... in Entrez GEO
 }
 
-filter_entrez <- function(info) {
-	info %>%
+filter_entrez <- function(info_all) {
+	info_all %>%
     dplyr::filter(name != 'GB_ACC') %>%
 	dplyr::filter(stringr::str_detect(full, stringr::fixed('entrez', T))) %>%
 	dplyr::filter(!duplicated(accession)) %>%
@@ -60,16 +56,16 @@ filter_entrez <- function(info) {
 	dplyr::filter(!stringr::str_detect(full, 'GEO'))  # Column added by GEO staff to ... in Entrez GEO
 }
 
-filter_ORF <- function(info) {
-	info %>%
+filter_ORF <- function(info_all) {
+	info_all %>%
     dplyr::filter(!(accession %in% c('GPL6353'))) %>%  # should use ensembl
 	dplyr::filter(name %in% c('ORF', 'ORF_LIST')) %>%
 	dplyr::filter(!duplicated(accession)) %>%
 	dplyr::filter(!stringr::str_detect(full, stringr::regex('ensembl|genbank', T)))
 }
 
-filter_symbol <- function(info) {
-	info %>%
+filter_symbol <- function(info_all) {
+	info_all %>%
     dplyr::filter(!(accession %in% c('GPL6152'))) %>%  	       # RefSeq  is better
 	dplyr::filter(!(accession %in% c('GPL544', 'GPL545'))) %>%                 # GB_ACC  is better
 	dplyr::filter(stringr::str_detect(name, stringr::fixed('symbol', T))) %>%
@@ -77,16 +73,16 @@ filter_symbol <- function(info) {
 	dplyr::filter(!duplicated(accession))
 }
 
-filter_ensembl <- function(info) {
-	info %>%
+filter_ensembl <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(name, stringr::fixed('ensembl', T))) %>%
 	dplyr::filter(!duplicated(accession)) %>%
 	dplyr::filter(name != 'Ensembl_genes_count') %>%
 	dplyr::filter(!stringr::str_detect(full, stringr::fixed('supported', T)))
 }
 
-filter_refseq <- function(info) {
-	info %>%
+filter_refseq <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(name, stringr::fixed('refseq', T))) %>%
 	dplyr::filter(!duplicated(accession)) %>%
 	dplyr::filter(name != 'RefSeq Single exon') %>%                     # GPL19407, GB_ACC is better
@@ -94,21 +90,21 @@ filter_refseq <- function(info) {
 	# dplyr::filter(stringr::str_detect(full, stringr::fixed('Distance between', T))) %>%  # ... and ... CpG ....
 }
 
-filter_genbank <- function(info) {
-	info %>%
+filter_genbank <- function(info_all) {
+	info_all %>%
     dplyr::filter(name %in% c('GB_ACC' ,'GB_LIST' ,'GENOME_ACC')) %>%
 	dplyr::filter(!duplicated(accession))
 }
 
-filter_unigene <- function(info) {
-	info %>%
+filter_unigene <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(name, stringr::fixed('unigene', T))) %>%
 	dplyr::filter(!duplicated(accession))
 }
 
 # not supported now -----------------
-filter_sequence <- function(info) {
-	info %>%
+filter_sequence <- function(info_all) {
+	info_all %>%
     dplyr::filter(stringr::str_detect(name, stringr::regex('^sequence$', T))) %>%
 	dplyr::filter(!duplicated(accession))
 }
@@ -198,8 +194,8 @@ make_platform_type <- function(measure, as_symbol_from = c('entrez', 'symbol', '
 
 #' @title make `platform` from GPL accession to test [guess_platform_type()]
 #' @keywords internal
-fake_platform <- function(accession, gpls) {
-	list(accession = accession, info = gpls[[accession]]$info)
+fake_platform <- function(accession, gpl_metas) {
+	list(accession = accession, info = gpl_metas[[accession]]$info)
 }
 
 
