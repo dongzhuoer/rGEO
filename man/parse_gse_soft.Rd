@@ -17,6 +17,9 @@ list
 \item table: tibble. chip annotation
 }
 }
+\description{
+parse GSE SOFT file (contains platform annotation)
+}
 \details{
 for now, we drop probes which haven't been mapped to a symbool (mapping to multiple symbols is okay).
 }
@@ -30,3 +33,4 @@ parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 Other read raw data: \code{\link{read_gse_matrix}},
   \code{\link{read_gse_soft}}
 }
+\concept{read raw data}

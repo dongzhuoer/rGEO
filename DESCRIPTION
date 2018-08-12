@@ -10,7 +10,7 @@ BugReports: https://github.com/dongzhuoer/rGEO/issues
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Imports:
     libzhuoer,
@@ -21,9 +21,13 @@ Imports:
     stringr,
     tibble,
     rvest
-Suggests: testthat,
+Suggests: 
+    rGEO.data,
+    devtools,
+    testthat,
     roxygen2,
-    rGEO.data
+    rmarkdown,
+    callr
 Remotes:
     dongzhuoer/libzhuoer,
     dongzhuoer/hgnc,

@@ -12,6 +12,9 @@ read_gse_soft(soft_file, verbose = F)
 \value{
 tibble or NULL. the first variable is \code{ID_REF} (probe ID) and the second one is \href{https://www.genenames.org/}{HUGO} gene symbol
 }
+\description{
+read GSE SOFT file (contains platform annotation)
+}
 \details{
 for now, we drop probes which haven't been mapped to a symbool (mapping multiple symbols is okay)
 }
@@ -25,3 +28,4 @@ read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'), 
 Other read raw data: \code{\link{parse_gse_soft}},
   \code{\link{read_gse_matrix}}
 }
+\concept{read raw data}

@@ -18,6 +18,9 @@ gpl_ftp(accession)
 \value{
 character. ftp path to directory,  without trailing \code{/}.
 }
+\description{
+ftp path to the directory of GEO accession (GDS, GSE or GPL)
+}
 \examples{
 gds_ftp('GDS479')
 

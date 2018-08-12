@@ -1,5 +1,5 @@
 testthat::context('Testing platform.R')
-if (basename(getwd()) == 'testthat') setwd('../..')
+if (basename(getwd()) == 'testthat') setwd('../..')  # workspace is reset per file
 
 
 # helper function ------------------

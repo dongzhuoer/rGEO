@@ -4,6 +4,9 @@
 \alias{fake_platform}
 \title{make \code{platform} from GPL accession to test \code{\link[=guess_platform_type]{guess_platform_type()}}}
 \usage{
-fake_platform(accession, gpls)
+fake_platform(accession, gpl_metas)
+}
+\description{
+make \code{platform} from GPL accession to test \code{\link[=guess_platform_type]{guess_platform_type()}}
 }
 \keyword{internal}

@@ -10,10 +10,18 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(comment = '')
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
 ```
 
+Still a draft, to be finished.
+
 # quick start
+
+some internal implementation is 
+    discussed in https://dongzhuoer.github.io/hgnc/docs/articles/content.html
 
 The format of SOFT (chip annotation) file is really a messy, or rather, aganist humanity.
 

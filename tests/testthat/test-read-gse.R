@@ -1,5 +1,5 @@
 testthat::context('Testing read_geo.R')
-if (basename(getwd()) == 'testthat') setwd('../..')
+if (basename(getwd()) == 'testthat') setwd('../..')  # workspace is reset per file
 
 
 

@@ -10,7 +10,12 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(comment = '')
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(tibble.print_min = 6, tibble.max_extra_cols = 1)
 ```
 
 ```{r}
@@ -19,10 +24,9 @@ library(rGEO)
 
 # quick start
 
-GSE raw data consists of expression matrix file and SOFT (chip annotation) file.
-
-You can find them at https://www.ncbi.nlm.nih.gov/geo/browse/, or use the 
-    following handy tools:
+You can find raw data at https://www.ncbi.nlm.nih.gov/geo/browse/ ^[search for 
+    `GSE***`, download files from the `Download family` section at the bottom.],
+    or use the following handy tools:
     
 ```{r, collapse=TRUE, comment = '#>'}
 gse_soft_ftp('GSE51280')
@@ -42,11 +46,18 @@ read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 
 # A little deeper
 
-Let's go a little deeper to see how it works (some internal implementation is discussed in https://dongzhuoer.github.io/hgnc/docs/articles/content.html). 
+Let's go a little deeper to see how this works. 
+
+The package mainly contains functions for   
+   1. telling the ftp path to GSE raw data: see `gds_ftp()` and `gpl_soft_ftp()`  
+   1. reading these files, including expression matrix file and SOFT (chip 
+        annotation) file, see below.  
 
 ## expression matrix file
 
-reading expression matrix file is quiet straightforward, you just need to locate where the information lies, and `readr::read_tsv()` would take care of the rest for you.
+reading expression matrix file is quiet straightforward, you just need to locate
+    where the information lies, and `readr::read_tsv()` would take care of the 
+    rest for you.
 
 ```{r eval=FALSE}
 read_gse_matrix
@@ -61,14 +72,18 @@ cat('```\n')
 
 ## SOFT (chip annotation) file
 
-SOFT (chip annotation) file is a lot more harder to deal with, in short, you have to dig useful information first ^[`parse_gse_soft()` does this] and convert that to a uniform format ^[almost the whole package does this, refer to [here]() for more details].
-
+SOFT (chip annotation) file is a lot more harder to deal with. In short, you 
+    have to dig useful information first:
+    
 ```{r}
-# extract useful information for further processing
 parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'), F)
 ```
 
-By the way, for both `parse_gse_soft()` and `read_gse_soft()` you can add `verbose = T` to make the process more clear.
+and convert that to a uniform format. Almost the whole package does the latter, 
+    refer to `vignette('probe2symbol')` for more details. 
+
+By the way, for both `parse_gse_soft()` and `read_gse_soft()`, you can add 
+    `verbose = T` to make the process more clear.
 
 
 

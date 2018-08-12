@@ -14,9 +14,9 @@ assertthat::assert_that(
 rmd_vignettes <- dir('vignettes', 'Rmd$', full = T);
 
 if (length(rmd_vignettes) > 0L) {
-	for (rmd_vignette in dir('vignettes', 'Rmd$', full = T)) {
+	for (rmd_vignette in rmd_vignettes) {
 		callr::r_vanilla(
-			function(input_file){rmarkdown::render(input_file)}, 
+			function(input_file) {rmarkdown::render(input_file)}, 
 			list(rmd_vignette), .libPaths(), show = T
 		)
 	}
@@ -27,9 +27,10 @@ if (length(rmd_vignettes) > 0L) {
 
 
 ```{r reinstall}
-# Here, we only build the vignettes and haven't edited any source code, thus test() and document() is not needed.
+# test() and document() is not needed since we haven't edited any source code
+
 system('R CMD INSTALL --no-multiarch --with-keep.source .')
-devtools::reload()  # needed to view installed vignettes
+devtools::reload()  # now you can view the vignettes
 ```
 
 

@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "*.Rmd": "markdown",
-        "data.Rmd": "rmd",
-        "vignettes.Rmd": "rmd"
-
-    }
-}

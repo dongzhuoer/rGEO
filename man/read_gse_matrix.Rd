@@ -12,6 +12,9 @@ read_gse_matrix(matrix_file)
 \value{
 tibble or NULL. the first variable is \code{ID_REF} (probe ID), others are gene expression value of each sample
 }
+\description{
+read GSE series matrix file (contains expression data)
+}
 \details{
 For now, we assume that the only special value in input file is '' (empty, you may search \code{\\t\\t}), i.e., no \code{Inf}, \code{NaN}, \code{NA}, etc. And we don't collect sample meta data.
 }
@@ -23,3 +26,4 @@ read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = '
 Other read raw data: \code{\link{parse_gse_soft}},
   \code{\link{read_gse_soft}}
 }
+\concept{read raw data}

@@ -1,5 +1,5 @@
 testthat::context('Testing ftp')
-if (basename(getwd()) == 'testthat') setwd('../..')
+if (basename(getwd()) == 'testthat') setwd('../..')  # workspace is reset per file
 
 
 testthat::test_that('geo_ftp()', {
