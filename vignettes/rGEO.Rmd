@@ -2,7 +2,7 @@
 title: "Introduction to rGEO"
 author: "Zhuoer Dong"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: prettydoc::html_pretty
 vignette: >
   %\VignetteIndexEntry{Introduction to rGEO}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,10 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 options(tibble.print_min = 6, tibble.max_extra_cols = 1)
 ```
@@ -28,7 +25,7 @@ You can find raw data at https://www.ncbi.nlm.nih.gov/geo/browse/ ^[search for
     `GSE***`, download files from the `Download family` section at the bottom.],
     or use the following handy tools:
     
-```{r, collapse=TRUE, comment = '#>'}
+```{r}
 gse_soft_ftp('GSE51280')
 
 gse_matrix_ftp('GSE51280')
@@ -36,7 +33,7 @@ gse_matrix_ftp('GSE51280')
     
 Then you can read them:
 
-```{r, comment=''}
+```{r}
 # expression matrix file
 read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = 'rGEO'))
 

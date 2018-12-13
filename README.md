@@ -4,11 +4,7 @@
 
 ## Overview
 
-This package contains functions to read GSE raw data and returns a tidy format. 
-    It's especially useful for chip annotation file, the format of which is 
-    really in a messy. You just need to provide the raw data file and it will 
-    give you a nice table containing probes and 
-    [HUGO](https://www.genenames.org/) gene symbols.
+This package contains functions to read GSE raw data and returns a tidy format. It's especially useful for chip annotation file, the format of which is really in a messy. You just need to provide the raw data file and it will give you a nice table containing probes and [HUGO](https://www.genenames.org/) gene symbols.
 
 
 ## Installation

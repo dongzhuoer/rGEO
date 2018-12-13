@@ -281,6 +281,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -288,14 +291,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -310,17 +373,22 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>rmd_vignettes &lt;- dir('vignettes', 'Rmd$', full = T);
+<div id="preparation" class="section level1">
+<h1>preparation</h1>
+</div>
+<div id="build-vignettes" class="section level1">
+<h1>Build vignettes</h1>
+<pre class="r"><code>rmd_vignettes &lt;- dir(&#39;vignettes&#39;, &#39;Rmd$&#39;, full = T);
 
 if (length(rmd_vignettes) &gt; 0L) {
-    for (rmd_vignette in dir('vignettes', 'Rmd$', full = T)) {
+    for (rmd_vignette in rmd_vignettes) {
         callr::r_vanilla(
-            function(input_file){rmarkdown::render(input_file)}, 
+            function(input_file) {rmarkdown::render(input_file)}, 
             list(rmd_vignette), .libPaths(), show = T
         )
     }
     
-    dir('vignettes', 'html$') %&gt;% {file.rename(paste0('vignettes/', .), paste0('inst/doc/', .))}
+    dir(&#39;vignettes&#39;, &#39;html$&#39;) %&gt;% {file.copy(paste0(&#39;vignettes/&#39;, .), paste0(&#39;inst/doc/&#39;, .), overwrite = T)}
 }</code></pre>
 <pre><code>## 
 ## 
@@ -347,7 +415,7 @@ if (length(rmd_vignettes) &gt; 0L) {
 ## 
 ## output file: probe2symbol.knit.md
 ## 
-## /usr/bin/pandoc +RTS -K512m -RTS probe2symbol.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output probe2symbol.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/zhuoer/.local/lib/R/rmarkdown/rmd/h/default.html --highlight-style pygments --css /home/zhuoer/.local/lib/R/rmarkdown/rmarkdown/templates/html_vignette/resources/vignette.css --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+## /usr/bin/pandoc +RTS -K512m -RTS probe2symbol.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output probe2symbol.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/zhuoer/.local/lib/R/prettydoc/resources/templates/cayman.html --highlight-style pygments --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --css probe2symbol_files/style.css 
 ## 
 ## Output created: probe2symbol.html
 ## 
@@ -357,75 +425,77 @@ if (length(rmd_vignettes) &gt; 0L) {
   |                                                                       
   |                                                                 |   0%
   |                                                                       
-  |.....                                                            |   8%
+  |....                                                             |   7%
 ##    inline R code fragments
 ## 
 ## 
   |                                                                       
-  |..........                                                       |  15%
+  |.........                                                        |  13%
 ## label: setup (with options) 
 ## List of 1
 ##  $ include: logi FALSE
 ## 
 ## 
   |                                                                       
-  |...............                                                  |  23%
+  |.............                                                    |  20%
 ##   ordinary text without R code
 ## 
 ## 
   |                                                                       
-  |....................                                             |  31%
-## label: unnamed-chunk-1 (with options) 
-## List of 2
-##  $ collapse: logi TRUE
-##  $ comment : chr &quot;#&gt;&quot;
-## 
+  |.................                                                |  27%
+## label: unnamed-chunk-1
 ## 
   |                                                                       
-  |.........................                                        |  38%
+  |......................                                           |  33%
 ##   ordinary text without R code
 ## 
 ## 
   |                                                                       
-  |..............................                                   |  46%
-## label: unnamed-chunk-2 (with options) 
-## List of 1
-##  $ comment: chr &quot;&quot;
-## 
+  |..........................                                       |  40%
+## label: unnamed-chunk-2
 ## 
   |                                                                       
-  |...................................                              |  54%
+  |..............................                                   |  47%
 ##   ordinary text without R code
 ## 
 ## 
   |                                                                       
-  |........................................                         |  62%
-## label: unnamed-chunk-3 (with options) 
+  |...................................                              |  53%
+## label: unnamed-chunk-3
+## 
+  |                                                                       
+  |.......................................                          |  60%
+##   ordinary text without R code
+## 
+## 
+  |                                                                       
+  |...........................................                      |  67%
+## label: unnamed-chunk-4 (with options) 
 ## List of 1
 ##  $ eval: logi FALSE
 ## 
 ## 
   |                                                                       
-  |.............................................                    |  69%
+  |................................................                 |  73%
 ##   ordinary text without R code
 ## 
 ## 
   |                                                                       
-  |..................................................               |  77%
-## label: unnamed-chunk-4 (with options) 
+  |....................................................             |  80%
+## label: unnamed-chunk-5 (with options) 
 ## List of 2
 ##  $ results: chr &quot;asis&quot;
 ##  $ echo   : logi FALSE
 ## 
 ## 
   |                                                                       
-  |.......................................................          |  85%
+  |........................................................         |  87%
 ##   ordinary text without R code
 ## 
 ## 
   |                                                                       
-  |............................................................     |  92%
-## label: unnamed-chunk-5
+  |.............................................................    |  93%
+## label: unnamed-chunk-6
 ## 
   |                                                                       
   |.................................................................| 100%
@@ -434,13 +504,18 @@ if (length(rmd_vignettes) &gt; 0L) {
 ## 
 ## output file: rGEO.knit.md
 ## 
-## /usr/bin/pandoc +RTS -K512m -RTS rGEO.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output rGEO.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/zhuoer/.local/lib/R/rmarkdown/rmd/h/default.html --highlight-style pygments --css /home/zhuoer/.local/lib/R/rmarkdown/rmarkdown/templates/html_vignette/resources/vignette.css --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+## /usr/bin/pandoc +RTS -K512m -RTS rGEO.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output rGEO.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/zhuoer/.local/lib/R/prettydoc/resources/templates/cayman.html --highlight-style pygments --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --css rGEO_files/style.css 
 ## 
 ## Output created: rGEO.html</code></pre>
 <pre><code>## [1] TRUE TRUE</code></pre>
-<pre class="r"><code># Here, we only build the vignettes and haven't edited any source code, thus test() and document() is not needed.
-system('R CMD INSTALL --no-multiarch --with-keep.source .')
-devtools::reload()  # needed to view installed vignettes</code></pre>
+</div>
+<div id="afterward" class="section level1">
+<h1>Afterward</h1>
+<pre class="r"><code># test() and document() is not needed since we haven&#39;t edited any source code
+
+system(&#39;R CMD INSTALL --no-multiarch --with-keep.source .&#39;)
+devtools::reload()  # now you can view the vignettes</code></pre>
+</div>
 
 
 

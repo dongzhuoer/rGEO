@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rGEO</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -115,29 +115,29 @@
 <p>Then you can read them:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># expression matrix file</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="../reference/read_gse_matrix.html">read_gse_matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'extdata/GSE51280_series_matrix.txt.gz'</span>, <span class="dt">package =</span> <span class="st">'rGEO'</span>))</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co"># A tibble: 123 x 25</span></a>
-<a class="sourceLine" id="cb3-4" title="4">  ID_REF GSM1241791 GSM1241792 GSM1241793 GSM1241794 GSM1241795 GSM1241796</a>
-<a class="sourceLine" id="cb3-5" title="5">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">       </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="dv">1</span> <span class="dv">20</span>          <span class="fl">-3.88</span>      <span class="fl">-4.00</span>      <span class="fl">-3.56</span>      <span class="fl">-2.54</span>      <span class="fl">-3.98</span>      <span class="fl">-4.20</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="dv">2</span> <span class="dv">21</span>          <span class="fl">-8.82</span>      <span class="fl">-9.61</span>      <span class="fl">-8.94</span>      <span class="fl">-5.44</span>      <span class="fl">-8.36</span>      <span class="fl">-8.95</span></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="dv">3</span> <span class="dv">22</span>          <span class="fl">-3.65</span>      <span class="fl">-5.80</span>      <span class="fl">-1.00</span>      <span class="fl">-3.54</span>      <span class="fl">-2.81</span>      <span class="fl">-5.58</span></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="dv">4</span> <span class="dv">23</span>          <span class="fl">-4.92</span>      <span class="fl">-7.61</span>      <span class="fl">-5.88</span>      <span class="fl">-4.60</span>      <span class="fl">-4.00</span>      <span class="fl">-4.75</span></a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="dv">5</span> <span class="dv">24</span>          <span class="fl">-3.51</span>      <span class="fl">-4.12</span>      <span class="fl">-3.92</span>      <span class="fl">-4.30</span>      <span class="fl">-4.31</span>      <span class="fl">-5.04</span></a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="dv">6</span> <span class="dv">25</span>          <span class="fl">-3.36</span>      <span class="fl">-3.90</span>      <span class="fl">-5.60</span>      <span class="fl">-2.52</span>      <span class="fl">-4.19</span>      <span class="fl">-4.12</span></a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="co"># ... with 117 more rows, and 18 more variables: GSM1241797 &lt;dbl&gt;, …</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; # A tibble: 123 x 25</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt;   ID_REF GSM1241791 GSM1241792 GSM1241793 GSM1241794 GSM1241795 GSM1241796</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; 1 20          -3.88      -4.00      -3.56      -2.54      -3.98      -4.20</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt; 2 21          -8.82      -9.61      -8.94      -5.44      -8.36      -8.95</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt; 3 22          -3.65      -5.80      -1.00      -3.54      -2.81      -5.58</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">#&gt; 4 23          -4.92      -7.61      -5.88      -4.60      -4.00      -4.75</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt; 5 24          -3.51      -4.12      -3.92      -4.30      -4.31      -5.04</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt; 6 25          -3.36      -3.90      -5.60      -2.52      -4.19      -4.12</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; # ... with 117 more rows, and 18 more variables: GSM1241797 &lt;dbl&gt;, …</span></a>
 <a class="sourceLine" id="cb3-13" title="13"></a>
 <a class="sourceLine" id="cb3-14" title="14"><span class="co"># SOFT (chip annotation) file</span></a>
 <a class="sourceLine" id="cb3-15" title="15"><span class="kw"><a href="../reference/read_gse_soft.html">read_gse_soft</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'extdata/GSE51280_family.soft.gz'</span>, <span class="dt">package =</span> <span class="st">'rGEO'</span>))</a>
-<a class="sourceLine" id="cb3-16" title="16"><span class="co"># A tibble: 121 x 2</span></a>
-<a class="sourceLine" id="cb3-17" title="17">  ID_REF symbol </a>
-<a class="sourceLine" id="cb3-18" title="18">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb3-19" title="19"><span class="dv">1</span> <span class="dv">100</span>    NDC80  </a>
-<a class="sourceLine" id="cb3-20" title="20"><span class="dv">2</span> <span class="dv">101</span>    NDRG1  </a>
-<a class="sourceLine" id="cb3-21" title="21"><span class="dv">3</span> <span class="dv">102</span>    NEUROG1</a>
-<a class="sourceLine" id="cb3-22" title="22"><span class="dv">4</span> <span class="dv">103</span>    NT5E   </a>
-<a class="sourceLine" id="cb3-23" title="23"><span class="dv">5</span> <span class="dv">104</span>    NUF2   </a>
-<a class="sourceLine" id="cb3-24" title="24"><span class="dv">6</span> <span class="dv">106</span>    PGR    </a>
-<a class="sourceLine" id="cb3-25" title="25"><span class="co"># ... with 115 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-16" title="16"><span class="co">#&gt; # A tibble: 121 x 2</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="co">#&gt;   ID_REF symbol </span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  </span></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="co">#&gt; 1 100    NDC80  </span></a>
+<a class="sourceLine" id="cb3-20" title="20"><span class="co">#&gt; 2 101    NDRG1  </span></a>
+<a class="sourceLine" id="cb3-21" title="21"><span class="co">#&gt; 3 102    NEUROG1</span></a>
+<a class="sourceLine" id="cb3-22" title="22"><span class="co">#&gt; 4 103    NT5E   </span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="co">#&gt; 5 104    NUF2   </span></a>
+<a class="sourceLine" id="cb3-24" title="24"><span class="co">#&gt; 6 106    PGR    </span></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="co">#&gt; # ... with 115 more rows</span></a></code></pre></div>
 </div>
 <div id="a-little-deeper" class="section level1">
 <h1 class="hasAnchor">
@@ -161,7 +161,7 @@
 <a class="sourceLine" id="cb5-8" title="8">    matrix_raw[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(matrix_boundary[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, matrix_boundary[<span class="dv">2</span>] <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)] <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-9" title="9"><span class="st">        </span>libzhuoer<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/libzhuoer/topics/read_char_delim">read_char_tsv</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>{<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/warning">suppressWarnings</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">mutate_at</a></span>(., <span class="dv">-1</span>, as.double))}</a>
 <a class="sourceLine" id="cb5-10" title="10">}</a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="op">&lt;</span>bytecode<span class="op">:</span><span class="st"> </span><span class="dv">0x55c33c3861c8</span><span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="op">&lt;</span>bytecode<span class="op">:</span><span class="st"> </span><span class="dv">0x56025c9f6638</span><span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb5-12" title="12"><span class="er">&lt;</span>environment<span class="op">:</span><span class="st"> </span>namespace<span class="op">:</span>rGEO<span class="op">&gt;</span></a></code></pre></div>
 </div>
 <div id="soft-chip-annotation-file" class="section level2">

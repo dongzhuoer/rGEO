@@ -2,6 +2,8 @@
 title: build package vignettes
 ---
 
+# preparation
+
 ```{r include=FALSE}
 assertthat::assert_that(
     knitr::current_input() %>% paste0('R-raw/', .) %>% file.exists(),
@@ -9,6 +11,7 @@ assertthat::assert_that(
 )
 ```
 
+# Build vignettes
 
 ```{r build-vignettes}
 rmd_vignettes <- dir('vignettes', 'Rmd$', full = T);
@@ -21,10 +24,11 @@ if (length(rmd_vignettes) > 0L) {
 		)
 	}
 	
-	dir('vignettes', 'html$') %>% {file.rename(paste0('vignettes/', .), paste0('inst/doc/', .))}
+	dir('vignettes', 'html$') %>% {file.copy(paste0('vignettes/', .), paste0('inst/doc/', .), overwrite = T)}
 }
 ```
 
+# Afterward
 
 ```{r reinstall}
 # test() and document() is not needed since we haven't edited any source code

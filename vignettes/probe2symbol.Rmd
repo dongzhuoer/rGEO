@@ -2,7 +2,7 @@
 title: "Mapping probes on a chip to HUGO gene symbol"
 author: "Zhuoer Dong"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: prettydoc::html_pretty
 vignette: >
   %\VignetteIndexEntry{Mapping probes on a chip to HUGO gene symbol}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,10 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
 Still a draft, to be finished.

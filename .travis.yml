@@ -1,21 +1,31 @@
-language: r
-matrix:
-  include:
-    - r: release
-    - os: osx
-    - r: oldrel
-cache: packages
+dist: xenial
+language: generic
+services: docker
+cache: 
+  directories: $HOME/.local/lib/R/
+env:
+  global:
+    - system_dep=""
+  matrix:
+    - job=build  
+    - job=test
 git:
   depth: false
 
+before_install:
+  - if [ "$job" == "build" ]; then export tag=remotes; else export tag=deverse; fi;
 install: 
-  - R --slave -e "if (!('remotes' %in% .packages(T))) install.packages('remotes')";
+  - docker run -dt -u `id -u`:`id -g` -v $TRAVIS_BUILD_DIR:$HOME/$TRAVIS_REPO_SLUG -w $HOME/$TRAVIS_REPO_SLUG -v $HOME/.local/lib/R:$HOME/.local/lib/R -e CI=true --name rlang0 dongzhuoer/rlang:$tag 2> /dev/null
+  # add user & group (assuming the image contains no user)
+  - docker exec -u root rlang0 groupadd `id -gn` -g `id -g`
+  - docker exec -u root rlang0 useradd $USER -u `id -u` -g `id -g`
+  # install system dependency
+  - docker exec -u root rlang0 bash -c "apt update && apt -y install $system_dep"
 script:
-  # build
-  - R --slave -e "remotes::install_local(getwd(), force = TRUE, , upgrade = TRUE)";
-  # test
-  - R --slave -e "remotes::install_deps(dependencies = 'Suggests')"; # at least include devtools, testthat, roxygen2
-  - R --slave -e "devtools::test(); testthat::test_dir('tests/testthat/', reporter = 'fail')";   # devtools::test() loads all and report result, testthat::test_dir() exit no-zero when a test fails  
+  - if [ "$job" == "build" ]; then docker exec rlang0 R --slave -e "Sys.setenv('GITHUB_PAT' = '$GITHUB_PAT'); remotes::install_local(force = TRUE, upgrade = TRUE)"; fi;
+  
+  - if [ "$job" == "test" ];  then docker exec rlang0 R --slave -e "Sys.setenv('GITHUB_PAT' = '$GITHUB_PAT');  remotes::install_deps(force = TRUE, upgrade = TRUE, dependencies = TRUE)"; fi;
+  - if [ "$job" == "test" ];  then docker exec rlang0 R --slave -e "pkgload::load_all(); testthat::test_dir('tests/testthat/'); testthat::test_dir('tests/testthat/', reporter = 'fail')"; fi; # default reports summary result, fail exit no-zero when a test fails
 
 notifications:
   email: false

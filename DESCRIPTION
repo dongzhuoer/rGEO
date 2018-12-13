@@ -1,7 +1,7 @@
 Package: rGEO
 Type: Package
 Title: read GEO (Gene Expression Omnibus) raw data
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Zhuoer", "Dong", email = "dongzhuoer@mail.nankai.edu.cn", 
     role = c("aut", "cre"))
 Description: refer to https://dongzhuoer.github.io/rGEO
@@ -23,13 +23,8 @@ Imports:
     rvest
 Suggests: 
     rGEO.data,
-    devtools,
-    testthat,
-    roxygen2,
-    rmarkdown,
-    callr
 Remotes:
     dongzhuoer/libzhuoer,
     dongzhuoer/hgnc,
     dongzhuoer/rGEO.data
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
