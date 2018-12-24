@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: person("Zhuoer", "Dong", email = "dongzhuoer@mail.nankai.edu.cn", 
     role = c("aut", "cre"))
 Description: refer to https://dongzhuoer.github.io/rGEO
-URL: https://github.com/dongzhuoer/rGEO
+URL: https://dongzhuoer.github.io/rGEO, https://github.com/dongzhuoer/rGEO
 BugReports: https://github.com/dongzhuoer/rGEO/issues
 License: file LICENSE
 Encoding: UTF-8
