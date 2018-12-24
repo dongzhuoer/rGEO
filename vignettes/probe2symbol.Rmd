@@ -17,8 +17,7 @@ Still a draft, to be finished.
 
 # quick start
 
-some internal implementation is 
-    discussed in https://dongzhuoer.github.io/hgnc/docs/articles/content.html
+some internal implementation is discussed in `vignette("content", package = "hgnc")`.
 
 The format of SOFT (chip annotation) file is really a messy, or rather, aganist humanity.
 
