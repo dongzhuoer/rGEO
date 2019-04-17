@@ -254,9 +254,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -287,8 +285,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -363,6 +359,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="fluid-row" id="header">
 
@@ -373,22 +378,13 @@ $(document).ready(function () {
 </div>
 
 
-<div id="preparation" class="section level1">
-<h1>preparation</h1>
-</div>
 <div id="build-vignettes" class="section level1">
 <h1>Build vignettes</h1>
-<pre class="r"><code>rmd_vignettes &lt;- dir(&#39;vignettes&#39;, &#39;Rmd$&#39;, full = T);
-
-if (length(rmd_vignettes) &gt; 0L) {
-    for (rmd_vignette in rmd_vignettes) {
-        callr::r_vanilla(
-            function(input_file) {rmarkdown::render(input_file)}, 
-            list(rmd_vignette), .libPaths(), show = T
-        )
-    }
-    
-    dir(&#39;vignettes&#39;, &#39;html$&#39;) %&gt;% {file.copy(paste0(&#39;vignettes/&#39;, .), paste0(&#39;inst/doc/&#39;, .), overwrite = T)}
+<pre class="r"><code>for (rmd_vignette in dir(here::here(&#39;vignettes&#39;), &#39;Rmd$&#39;, full = T)) {
+    callr::r_vanilla(
+        function(input_file) {rmarkdown::render(input_file)}, 
+        list(rmd_vignette), .libPaths(), show = T
+    )
 }</code></pre>
 <pre><code>## 
 ## 
@@ -507,6 +503,12 @@ if (length(rmd_vignettes) &gt; 0L) {
 ## /usr/bin/pandoc +RTS -K512m -RTS rGEO.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output rGEO.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/zhuoer/.local/lib/R/prettydoc/resources/templates/cayman.html --highlight-style pygments --mathjax --variable &#39;mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#39; --css rGEO_files/style.css 
 ## 
 ## Output created: rGEO.html</code></pre>
+<pre class="r"><code>dir(here::here(&#39;vignettes&#39;), &#39;html$&#39;) %&gt;%
+    {file.copy(
+        paste0(here::here(&#39;vignettes/&#39;), .), 
+        paste0(here::here(&#39;inst/doc/&#39;), .), 
+        overwrite = T
+    )}</code></pre>
 <pre><code>## [1] TRUE TRUE</code></pre>
 </div>
 <div id="afterward" class="section level1">
