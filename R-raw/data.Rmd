@@ -269,7 +269,7 @@ assertthat::assert_that(
 	msg = 'not all platforms included in `gpl` data'
 )
 
-devtools::use_data(gpl, overwrite = T)
+usethis::use_data(gpl, overwrite = T)
 ```
 
 

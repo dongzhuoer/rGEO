@@ -25,7 +25,9 @@ read_gse_matrix <- function(matrix_file) {
 	if (diff(matrix_boundary) == 2L) return(NULL); # only a header line, no data to read
     
 	matrix_raw[seq(matrix_boundary[1] + 1, matrix_boundary[2] - 1)] %>%
-    	libzhuoer::read_char_tsv() %>% {suppressWarnings(dplyr::mutate_at(., -1, as.double))}
+    	readr::read_tsv(T, libzhuoer::cols_char()) %>% 
+        libzhuoer::rm_problematic_row() %>% 
+        {suppressWarnings(dplyr::mutate_at(., -1, as.double))}
 }
 #" maybe used to parse meta data of samples
 # meta <- series %>% stringr::str_subset('^!Sample_') %>% stringr::str_replace('^!', '') %>%
