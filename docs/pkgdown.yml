@@ -1,0 +1,10 @@
+pandoc: '2.5'
+pkgdown: 1.3.0.9000
+pkgdown_sha: ~
+articles:
+  probe2symbol: probe2symbol.html
+  rGEO: rGEO.html
+urls:
+  reference: https://dongzhuoer.github.io/rGEO/reference
+  article: https://dongzhuoer.github.io/rGEO/articles
+
