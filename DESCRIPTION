@@ -22,7 +22,8 @@ Imports:
     tibble,
     rvest
 Suggests: 
-    rGEO.data,
+    prettydoc,
+    rGEO.data
 Remotes:
     dongzhuoer/libzhuoer,
     dongzhuoer/hgnc,
