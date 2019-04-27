@@ -8,9 +8,6 @@ authors:
 template:
     params:
         bootswatch: cerulean
-        docsearch:
-            api_key: 7b0f7a9dd2791185a9692180b9a7946e
-            index_name: rgeo
 
 navbar:
     structure:
