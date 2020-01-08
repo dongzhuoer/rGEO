@@ -25,7 +25,8 @@ read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'), 
 
 }
 \seealso{
-Other read raw data: \code{\link{parse_gse_soft}},
-  \code{\link{read_gse_matrix}}
+Other read raw data: 
+\code{\link{parse_gse_soft}()},
+\code{\link{read_gse_matrix}()}
 }
 \concept{read raw data}

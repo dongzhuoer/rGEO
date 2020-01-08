@@ -16,14 +16,15 @@ tibble or NULL. the first variable is \code{ID_REF} (probe ID), others are gene 
 read GSE series matrix file (contains expression data)
 }
 \details{
-For now, we assume that the only special value in input file is '' (empty, you may search \code{\\t\\t}), i.e., no \code{Inf}, \code{NaN}, \code{NA}, etc. And we don't collect sample meta data.
+For now, we assume that the only special value in input file is '' (empty, you may search \verb{\\\\t\\\\t}), i.e., no \code{Inf}, \code{NaN}, \code{NA}, etc. And we don't collect sample meta data.
 }
 \examples{
 read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = 'rGEO'))
 
 }
 \seealso{
-Other read raw data: \code{\link{parse_gse_soft}},
-  \code{\link{read_gse_soft}}
+Other read raw data: 
+\code{\link{parse_gse_soft}()},
+\code{\link{read_gse_soft}()}
 }
 \concept{read raw data}

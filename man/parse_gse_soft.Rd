@@ -30,7 +30,8 @@ parse_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 
 }
 \seealso{
-Other read raw data: \code{\link{read_gse_matrix}},
-  \code{\link{read_gse_soft}}
+Other read raw data: 
+\code{\link{read_gse_matrix}()},
+\code{\link{read_gse_soft}()}
 }
 \concept{read raw data}
