@@ -19,6 +19,8 @@ options(tibble.print_min = 6, tibble.max_extra_cols = 1)
 library(rGEO)
 ```
 
+
+
 # quick start
 
 You can find raw data at https://www.ncbi.nlm.nih.gov/geo/browse/ ^[search for 
@@ -40,6 +42,8 @@ read_gse_matrix(system.file('extdata/GSE51280_series_matrix.txt.gz', package = '
 # SOFT (chip annotation) file
 read_gse_soft(system.file('extdata/GSE51280_family.soft.gz', package = 'rGEO'))
 ```
+
+
 
 # A little deeper
 
@@ -67,6 +71,7 @@ cat('```\n')
 ```
 
 
+
 ## SOFT (chip annotation) file
 
 SOFT (chip annotation) file is a lot more harder to deal with. In short, you 
@@ -84,3 +89,21 @@ By the way, for both `parse_gse_soft()` and `read_gse_soft()`, you can add
 
 
 
+# Innovation
+
+> The format of SOFT (chip annotation) file is really a terrible messy, or rather, aganist humanity. Even though I have developed this handy package, I never want to touch it again.
+
+The central problem is that we don't know each probe corresponding to which gene. 
+
+The annotation (TSV) contains various information, such as Entrez Gene ID、Ensembl gene ID、INSDC accession、RefSeq accession (nucleotide), so I developed [hgnc](https://github.com/dongzhuoer/hgnc) to universely convert them to [HUGO](https://www.genenames.org/) gene symbol. That is actually a fairly easy task, what real drives one crazy is the messy column names. Given the following snippet ^[the left part is column name, and the right part is explanation], how can you make sure which columns exactly store Entrez Gene ID? ......
+
+```
+EntrezGeneID: EntrezGene ID
+ORF: Entrez Gene identifier for the gene represented
+GeneID: Entrez Gene identification number
+UniGene_ID: UniGene Database Accession Number (http://www.ncbi.nlm.nih.gov/sites/entrez?db=unigene)
+ORF: Entrez GENE ID
+Entrez_Gene_ID: Entrez gene ID
+GENE: Entrez GeneID of sequence used to design cDNA probe
+Gene_ID: id in NCBI Entrez Gene database
+```

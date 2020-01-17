@@ -1,5 +1,17 @@
 
 
+# rGEO 0.2.0
+
+## New features
+
+1. documentation finish vignette, enable linking across packages
+
+## Minor improvements and fixes
+
+1. `libzhuoer::cols_char()` supersedes `read_char_*()`
+
+
+
 # rGEO 0.1.0
 
 ## New features

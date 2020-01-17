@@ -1,7 +1,7 @@
 Package: rGEO
 Type: Package
 Title: read GEO (Gene Expression Omnibus) raw data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Zhuoer", "Dong", email = "dongzhuoer@mail.nankai.edu.cn", 
     role = c("aut", "cre"))
 Description: refer to https://github.com/dongzhuoer/rGEO
